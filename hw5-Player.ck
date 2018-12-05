@@ -30,6 +30,7 @@ class Player
     1 => s.loop;
     me.dir()+"violin_A3_15_forte_arco-normal.wav" => v.read; 
     1 => v.loop;
+    
  
     SndBuf thund => dac;
 
@@ -41,6 +42,12 @@ class Player
         0 => int counter;
         while (true)
         {
+            Std.rand2f(.5, 1) => float rate;
+            rate => v.rate;
+            <<<"rate:">>>;
+            <<<rate>>>;
+            
+            
             <<<counter>>>;
             1 +=> counter;
             
@@ -59,13 +66,13 @@ class Player
             0 => v.gain;
             
             if(amp.e.last()*10000 < .2){
-                1 => v.gain;
+                3 => v.gain;
             }
             else if(amp.e.last()*10000 < .8){
-                .6 => v.gain;
+                1.2 => v.gain;
             }
             else if(amp.e.last()*10000 < 1.2){
-                .2 => v.gain;
+                .5 => v.gain;
             }            
             
             
@@ -73,10 +80,10 @@ class Player
             if(amp.e.last()*10000 > 5){
                 
                 
-                5 => s.gain;
+                3 => s.gain;
                 
                 me.dir()+"thunder_strike_1.wav" => thund.read; 
-                .8 => thund.gain;               
+                .6 => thund.gain;               
                 
             }
             
