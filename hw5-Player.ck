@@ -25,7 +25,12 @@ class Env
 class Player
 {
     SndBuf s => dac;
-    me.dir()+"Rain_Inside_House.wav" => s.read; 
+    SndBuf v => dac;
+    me.dir()+"Rain_Inside_House.wav" => s.read;
+    1 => s.loop;
+    me.dir()+"violin_A3_15_forte_arco-normal.wav" => v.read; 
+    1 => v.loop;
+ 
     SndBuf thund => dac;
 
 
@@ -38,20 +43,43 @@ class Player
         {
             <<<counter>>>;
             1 +=> counter;
-            if(counter == 18){
-                break;
+            
+            //restart sample at end
+            if(counter == 16){
+                0 => s.pos; 
+                0 => counter;
             }
             <<<amp.e.last()*10000>>>;
+            amp.e.last()*10000 => s.gain;
+
+            amp.e.last()*10000 => v.gain;
+
+
             //sets the gain and frequency
+            0 => v.gain;
+            
+            if(amp.e.last()*10000 < .2){
+                1 => v.gain;
+            }
+            else if(amp.e.last()*10000 < .8){
+                .6 => v.gain;
+            }
+            else if(amp.e.last()*10000 < 1.2){
+                .2 => v.gain;
+            }            
+            
+            
             
             if(amp.e.last()*10000 > 5){
                 
+                
+                5 => s.gain;
+                
                 me.dir()+"thunder_strike_1.wav" => thund.read; 
-                1 => thund.gain;               
+                .8 => thund.gain;               
                 
             }
             
-            amp.e.last()*10000 => s.gain;
             //s.freq(freq.e.last());
             1000::ms => now;
         }
