@@ -26,12 +26,15 @@ class Player
 {
     SndBuf s => dac;
     SndBuf v => dac;
+    SndBuf v2 => dac;
+
     me.dir()+"Rain_Inside_House.wav" => s.read;
     1 => s.loop;
     me.dir()+"violin_A3_15_forte_arco-normal.wav" => v.read; 
     1 => v.loop;
+    me.dir()+"violin_A3_15_forte_arco-normal.wav" => v2.read; 
+    1 => v2.loop; 
     
- 
     SndBuf thund => dac;
 
 
@@ -44,11 +47,8 @@ class Player
         {
             Std.rand2f(.5, 1) => float rate;
             rate => v.rate;
-            <<<"rate:">>>;
-            <<<rate>>>;
+            rate * 1.059463 * 1.059463 * 1.059463 * 1.059463 => v2.rate;
             
-            
-            <<<counter>>>;
             1 +=> counter;
             
             //restart sample at end
@@ -60,23 +60,30 @@ class Player
             amp.e.last()*10000 => s.gain;
 
             amp.e.last()*10000 => v.gain;
+            amp.e.last()*10000 => v2.gain;
+
 
 
             //sets the gain and frequency
             0 => v.gain;
+            0 => v2.gain;
+
             
             if(amp.e.last()*10000 < .2){
                 3 => v.gain;
+                3 => v2.gain;
+
             }
             else if(amp.e.last()*10000 < .8){
                 1.2 => v.gain;
+                1.2 => v2.gain;
             }
             else if(amp.e.last()*10000 < 1.2){
                 .5 => v.gain;
+                .5 => v2.gain;
+
             }            
-            
-            
-            
+
             if(amp.e.last()*10000 > 5){
                 
                 
